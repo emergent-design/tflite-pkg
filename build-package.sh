@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=v2.16.1
-VERSION=2.16.1-2
+VERSION=2.16.1-3
 PLATFORM=${1:-x86_64}
 
 apt-get update
