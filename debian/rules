@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+include /usr/share/dpkg/pkg-info.mk
+export DEB_VERSION
+export DEB_HOST_MULTIARCH
+DISTRIBUTION := $(shell sed -n "s/^VERSION_CODENAME=//p" /etc/os-release)
+
+clean:
+	dh_clean
+
+build:
+	@# Do nothing
+
+binary:
+	dh_prep
+	dh_install
+	dh_link
+	dh_link --package=libtensorflowlite2 usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_c.so.${DEB_VERSION} usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_c.so.2
+	dh_link --package=libtensorflowlite2 usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_gpu_delegate.so.${DEB_VERSION} usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_gpu_delegate.so.2
+	dh_link --package=libtensorflowlite-dev usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_c.so.2 usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_c.so
+	dh_link --package=libtensorflowlite-dev usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_gpu_delegate.so.2 usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_gpu_delegate.so
+	dh_installdocs
+	dh_installchangelogs
+	dh_compress
+	dh_fixperms
+	dh_strip
+	dh_makeshlibs
+	dh_shlibdeps
+	dh_installdeb
+	dh_gencontrol -- -v"$(DEB_VERSION)~$(DISTRIBUTION)"
+	dh_md5sums
+	dh_builddeb

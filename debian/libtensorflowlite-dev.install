@@ -1,0 +1,11 @@
+#!/usr/bin/dh-exec
+
+tensorflow/lite/c/c_api*.h usr/include/tensorflow/lite/c/
+tensorflow/lite/c/common.h usr/include/tensorflow/lite/c/
+tensorflow/lite/core/c/c_api*.h usr/include/tensorflow/lite/core/c/
+tensorflow/lite/core/c/common.h usr/include/tensorflow/lite/core/c/
+tensorflow/lite/core/c/registration_external.h usr/include/tensorflow/lite/core/c/
+tensorflow/lite/builtin_ops.h usr/include/tensorflow/lite/
+tensorflow/lite/core/async/c/types.h usr/include/tensorflow/lite/core/async/c/
+tensorflow/lite/delegates/gpu/delegate.h usr/include/tensorflow/lite/delegates/gpu/
+tensorflow/lite/delegates/gpu/delegate_options.h usr/include/tensorflow/lite/delegates/gpu/

@@ -1,0 +1,32 @@
+Source: libtensorflowlite2
+Section: libs
+Priority: optional
+Build-Depends: build-essential, debhelper (>= 9), dh-exec
+Maintainer: Dan Parnham <dan@emergent-design.co.uk>
+Homepage: https://www.tensorflow.org/
+
+Package: libtensorflowlite2
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ocl-icd-libopencl1
+Description: Computation using data flow graphs for scalable machine learning (C)
+ TensorFlow is an open source software library for numerical computation
+ using data flow graphs. The graph nodes represent mathematical operations,
+ while the graph edges represent the multidimensional data arrays (tensors)
+ that flow between them. This flexible architecture enables you to deploy
+ computation to one or more CPUs or GPUs in a desktop, server, or mobile
+ device without rewriting code.
+
+Package: libtensorflowlite-dev
+Section: libdevel
+Architecture: any
+Depends: libtensorflowlite2 (= ${binary:Version}), ${misc:Depends}
+Description: Computation using data flow graphs for scalable machine learning (C)
+ TensorFlow is an open source software library for numerical computation
+ using data flow graphs. The graph nodes represent mathematical operations,
+ while the graph edges represent the multidimensional data arrays (tensors)
+ that flow between them. This flexible architecture enables you to deploy
+ computation to one or more CPUs or GPUs in a desktop, server, or mobile
+ device without rewriting code.
+ .
+ This package ships C headers files for tensorflowlite.

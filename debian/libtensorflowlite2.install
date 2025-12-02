@@ -1,0 +1,5 @@
+#!/usr/bin/dh-exec
+
+bazel-bin/tensorflow/lite/c/libtensorflowlite_c.so => usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_c.so.${DEB_VERSION}
+bazel-bin/tensorflow/lite/delegates/gpu/libtensorflowlite_gpu_delegate.so => usr/lib/${DEB_HOST_MULTIARCH}/libtensorflowlite_gpu_delegate.so.${DEB_VERSION}
+

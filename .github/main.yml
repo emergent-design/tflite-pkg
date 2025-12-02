@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  debs-amd64:
+    name: Build amd64 debs
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: earthly/actions/setup-earthly@v1
+        with:
+          version: v0.8.16
+
+      - uses: actions/checkout@v4
+
+      - name: Run build
+        run: earthly +all-dists
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-amd64
+          path: build/**/*.deb
+
+
+  debs-arm64:
+    name: Build arm64 debs
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: earthly/actions/setup-earthly@v1
+        with:
+          version: v0.8.16
+
+      - uses: actions/checkout@v4
+
+      - name: Run build
+        run: earthly +all-dists
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-arm64
+          path: build/**/*.deb
+
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: [ debs-amd64, debs-arm64 ]
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: artifacts-*
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -R
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/**/**.deb
