@@ -7,50 +7,74 @@ on:
       - "v*"
 
 jobs:
-  debs-amd64:
-    name: Build amd64 debs
-    runs-on: ubuntu-latest
+  package-jammy-amd64:
+    name: Package for jammy amd64
+    runs-on: ubuntu-22.04
 
     steps:
-      - uses: earthly/actions/setup-earthly@v1
-        with:
-          version: v0.8.16
-
       - uses: actions/checkout@v4
 
-      - name: Run build
-        run: earthly +all-dists
+      - name: "Running build"
+        run: ./build-package.sh x86_64
+        shell: bash
 
       - uses: actions/upload-artifact@v4
         with:
-          name: artifacts-amd64
-          path: build/**/*.deb
+          name: artifacts-jammy-amd64
+          path: "*.deb"
 
+  package-noble-amd64:
+    name: Package for noble amd64
+    runs-on: ubuntu-24.04
 
-  debs-arm64:
-    name: Build arm64 debs
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Running build"
+        run: ./build-package.sh x86_64
+        shell: bash
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-noble-amd64
+          path: "*.deb"
+
+  package-jammy-arm64:
+    name: Package for jammy arm64
+    runs-on: ubuntu-22.04-arm
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Running build"
+        run: ./build-package.sh arm64
+        shell: bash
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-jammy-arm64
+          path: "*.deb"
+
+  package-noble-arm64:
+    name: Package for noble arm64
     runs-on: ubuntu-24.04-arm
 
     steps:
-      - uses: earthly/actions/setup-earthly@v1
-        with:
-          version: v0.8.16
-
       - uses: actions/checkout@v4
 
-      - name: Run build
-        run: earthly +all-dists
+      - name: "Running build"
+        run: ./build-package.sh arm64
+        shell: bash
 
       - uses: actions/upload-artifact@v4
         with:
-          name: artifacts-arm64
-          path: build/**/*.deb
-
+          name: artifacts-noble-arm64
+          path: "*.deb"
 
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: [ debs-amd64, debs-arm64 ]
+    needs: [ package-jammy-amd64, package-noble-amd64, package-jammy-arm64, package-noble-arm64 ]
 
     steps:
       - uses: actions/download-artifact@v4
