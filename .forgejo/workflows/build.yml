@@ -1,0 +1,29 @@
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+    package:
+      name: package ${{matrix.dist}} ${{ matrix.arch }}
+      runs-on: ${{ matrix.arch }}
+      strategy:
+        matrix:
+          arch: [amd64, arm64]
+          dist: [jammy, noble, trixie]
+
+      steps:
+        - uses: actions/checkout@v4
+          with:
+            persist-credentials: false
+
+        - name: "Launch earthly"
+          run: earthly +package --DISTRIBUTION=${{ matrix.dist }}
+
+        - uses: ${{ vars.deploy }}
+          with:
+            type: complex
+            path: public
+            component: main
+            key: ${{ secrets.deploy_key }}
